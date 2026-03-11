@@ -31,7 +31,6 @@ function showTab(name, el) {
   if (name === 'attendance') loadAttendanceForDate();
 }
 
-// ─── STAFF ───────────────────────────────────────────
 async function loadStaff() {
   const res = await fetch(`${API}/staff`);
   staffList = await res.json();
@@ -82,7 +81,6 @@ async function deleteStaff(id) {
   loadStaff();
 }
 
-// ─── MODAL ───────────────────────────────────────────
 let currentModalStaffId = null;
 
 function openModal(id) {
@@ -118,7 +116,6 @@ async function saveModal() {
   loadStaff();
 }
 
-// ─── ATTENDANCE ───────────────────────────────────────
 async function loadAttendanceForDate() {
   const date = document.getElementById('attendanceDate').value;
   if (!date) return;
@@ -134,7 +131,6 @@ async function loadAttendanceForDate() {
     }
   });
 
-  // Auto mark Sunday as Holiday
   if (isSunday(date)) {
     for (const s of staffList) {
       if (!todayAttendance[s._id]) {
@@ -190,7 +186,6 @@ async function markAttendance(staffId, date, status, silent = false) {
   }
 }
 
-// ─── REPORT ───────────────────────────────────────────
 async function generateReport() {
   const month = document.getElementById('reportMonth').value;
   if (!month) return alert('Select a month');
@@ -202,7 +197,6 @@ async function generateReport() {
   const daysInMonth = new Date(year, mon, 0).getDate();
   const workingDays = getWorkingDays(year, mon);
 
-  // Get all Sundays in this month
   const sundaysInMonth = [];
   for (let d = 1; d <= daysInMonth; d++) {
     const date = new Date(year, mon - 1, d);
@@ -217,10 +211,8 @@ async function generateReport() {
     const halfDay = sRecords.filter(r => r.status === 'Half Day').length;
     const absent = sRecords.filter(r => r.status === 'Absent').length;
 
-    // Count DB holidays
     const dbHolidays = sRecords.filter(r => r.status === 'Holiday').map(r => r.date);
 
-    // Add Sundays not already counted in DB
     const extraSundays = sundaysInMonth.filter(d => !dbHolidays.includes(d)).length;
     const holiday = dbHolidays.length + extraSundays;
 

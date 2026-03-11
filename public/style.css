@@ -197,7 +197,6 @@ tr:hover td { background: #fafafa; }
 
 .sunday-label { font-size: 0.75rem; color: #007bff; margin-top: 6px; text-align: center; }
 
-/* Modal */
 .modal-overlay {
   display: none;
   position: fixed;
